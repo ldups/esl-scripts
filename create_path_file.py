@@ -3,11 +3,15 @@ from match_gene_groups import match_gene_groups
 
 ontology_file_name = 'MPheno_OBO.ontology.txt'
 
-matching_gene_cats = match_gene_groups(ontology_file_name)
-
 all_paths_file_name = 'all_orthomam_alignment_paths.txt'
 
 gene_data_file_name = 'MGI_phenotype_ontology_data.txt'
+
+def find_term_by_id(id, term_dict):
+    for term in term_dict:
+        if id == term.id:
+            return term
+    return None
 
 def parse_full_path_file(all_paths_file):
     path_dictionary = {}
@@ -48,8 +52,33 @@ def create_path_file(all_paths_file_name, gene_data_file_name):
     group_key_file = open('output_key_file.txt', 'w')
 
     matching_groups = match_gene_groups('MPheno_OBO.ontology.txt')
+    group_dictionary = {}
     for group in matching_groups:
-        group_key_file.write(group.id + '\n')
+        group_dictionary[group.id] = []
+
+    for gene_name in path_dictionary:
+        if gene_name in gene_dictionary:
+            groups = gene_dictionary[gene_name]
+            for group in groups:
+                if group in group_dictionary:
+                    group_dictionary[group] = path_dictionary[gene_name]
+
+    group_key_file.write('Id\tName\tNumber of paths\n')
+    for group in group_dictionary:
+        term = find_term_by_id(group, matching_groups)
+        id = group
+        name = term.name
+        num_paths = len(group_dictionary[group])
+        group_key_file.write(id + '\t' + name + '\t' + str(num_paths) + '\n')
+
+        for path in group_dictionary[group]:
+            final_path_file.write(path + ', ')
+        final_path_file.write('\n')
+
+
+
+
+    
 
     """ for gene_id in path_dictionary:
         path = path_dictionary[gene_id]
