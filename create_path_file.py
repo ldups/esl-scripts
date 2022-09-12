@@ -61,7 +61,7 @@ def create_path_file(all_paths_file_name, gene_data_file_name):
             groups = gene_dictionary[gene_name]
             for group in groups:
                 if group in group_dictionary:
-                    group_dictionary[group] = path_dictionary[gene_name]
+                    group_dictionary[group].append(path_dictionary[gene_name])
 
     group_key_file.write('Id\tName\tNumber of paths\n')
     for group in group_dictionary:
@@ -71,24 +71,16 @@ def create_path_file(all_paths_file_name, gene_data_file_name):
         num_paths = len(group_dictionary[group])
         group_key_file.write(id + '\t' + name + '\t' + str(num_paths) + '\n')
 
+        final_path_file.write(name + '\n*******************\n')
         for path in group_dictionary[group]:
-            final_path_file.write(path + ', ')
+            if group_dictionary[group].index(path) != len(group_dictionary[group]) - 1:
+                final_path_file.write(path + ', ')
+            else:
+                final_path_file.write(path)
         final_path_file.write('\n')
-
-
-
-
-    
-
-    """ for gene_id in path_dictionary:
-        path = path_dictionary[gene_id]
-        if gene_id in gene_dictionary:
-            gene_groups = gene_dictionary[gene_id] """
 
     group_key_file.close()
     final_path_file.close()
 
 create_path_file(all_paths_file_name, gene_data_file_name)
 
-#print(read_gene_data_file(gene_data_file_name))
-#parse_full_path_file(all_paths_file_name)
