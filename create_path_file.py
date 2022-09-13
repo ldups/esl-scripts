@@ -1,6 +1,7 @@
 import re
 import time
 from match_gene_groups import match_gene_groups
+from match_gene_groups import Search_method
 
 ontology_file_name = 'MPheno_OBO.ontology.txt'
 
@@ -49,10 +50,10 @@ def create_path_file(all_paths_file_name, gene_data_file_name):
     path_dictionary = parse_full_path_file(all_paths_file_name)
     gene_dictionary = read_gene_data_file(gene_data_file_name)
 
-    final_path_file = open('output_path_file.txt', 'w')
-    group_key_file = open('output_key_file.txt', 'w')
+    final_path_file = open('output_path_file_level_4.txt', 'w')
+    group_key_file = open('output_key_file.txt_level_4', 'w')
 
-    matching_groups = match_gene_groups('MPheno_OBO.ontology.txt')
+    matching_groups = match_gene_groups('MPheno_OBO.ontology.txt', Search_method.LEVEL, search_term = None, level = 4)
     group_dictionary = {}
     for group in matching_groups:
         group_dictionary[group.id] = []
