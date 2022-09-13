@@ -1,6 +1,4 @@
 # represents a term in ontology file with id, name, and 'is_a' info
-from re import I
-
 
 class Term:
     def __init__(self, id, name, is_a):
@@ -73,11 +71,3 @@ def build_ontology_term_list(file_path):
 
 
 
-
-
-""" # if last term, selects overall last item to avoid index out of bounds error
-            if i == len(term_index_list) - 1:
-                is_a = tree_content[len(tree_content) - 1]
-            else:
-                is_a = tree_content[term_index_list[i+1]-1]
-            #removes obsolete terms """
