@@ -1,4 +1,5 @@
 import re
+import time
 from match_gene_groups import match_gene_groups
 
 ontology_file_name = 'MPheno_OBO.ontology.txt'
@@ -69,18 +70,21 @@ def create_path_file(all_paths_file_name, gene_data_file_name):
         id = group
         name = term.name
         num_paths = len(group_dictionary[group])
-        group_key_file.write(id + '\t' + name + '\t' + str(num_paths) + '\n')
+        if num_paths > 0:
+            group_key_file.write(id + '\t' + name + '\t' + str(num_paths) + '\n')
 
-        final_path_file.write(name + '\n*******************\n')
-        for path in group_dictionary[group]:
-            if group_dictionary[group].index(path) != len(group_dictionary[group]) - 1:
-                final_path_file.write(path + ', ')
-            else:
-                final_path_file.write(path)
-        final_path_file.write('\n')
+            
+            for path in group_dictionary[group]:
+                if group_dictionary[group].index(path) != len(group_dictionary[group]) - 1:
+                    final_path_file.write(path + ', ')
+                else:
+                    final_path_file.write(path)
+            final_path_file.write('\n')
 
     group_key_file.close()
     final_path_file.close()
 
+start_time = time.time()
 create_path_file(all_paths_file_name, gene_data_file_name)
+print("--- %s seconds ---" % (time.time() - start_time))
 
