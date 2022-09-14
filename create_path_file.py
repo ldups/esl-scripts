@@ -8,12 +8,14 @@ all_paths_file_name = 'all_orthomam_alignment_paths.txt'
 
 gene_data_file_name = 'MGI_phenotype_ontology_data.txt'
 
+# finds a term by id from a list of terms
 def find_term_by_id(id, term_dict):
     for term in term_dict:
         if id == term.id:
             return term
     return None
 
+# from path file, creates a dictionary in form {gene name: path}
 def parse_full_path_file(all_paths_file):
     path_dictionary = {}
 
@@ -30,6 +32,7 @@ def parse_full_path_file(all_paths_file):
 
     return path_dictionary
              
+# from phenotype ontology data file, creates dictionary in form {gene name: [phenotype ids]}
 def read_gene_data_file(gene_data_file_name):
     gene_data_file = open(gene_data_file_name, 'r')
     full_gene_content = gene_data_file.read().splitlines()
