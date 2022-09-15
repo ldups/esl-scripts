@@ -47,8 +47,8 @@ def extract_terms(tree_content, term_index_list):
     # returns a list of term objects
     return term_list
 
-# parses ontology file and converts terms in file into list of Term objects
 def build_ontology_term_list(file_path):
+    '''parses ontology file and converts terms in file into list of Term objects'''
     # reads tree file and splits lines into a list
     tree_file = open(file_path, 'r')
     tree_content = tree_file.read().splitlines()
