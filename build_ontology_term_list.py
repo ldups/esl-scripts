@@ -24,6 +24,8 @@ def extract_terms(tree_content, term_index_list):
             is_obsolete = False
             id = tree_content[term_index+1]
             name = tree_content[term_index+2]
+            is_a_list = []
+            is_a_list_formatted = []
 
             # parses term to find obsolescence and is_a line
             start_index = term_index + 3
@@ -38,11 +40,14 @@ def extract_terms(tree_content, term_index_list):
                     is_obsolete = True
                     break
                 elif line.startswith('is_a'):
-                    is_a = line
+                    is_a_list.append(line)
             
+            for is_a in is_a_list:
+                is_a_list_formatted.append(parse_inheritance(is_a))
+
             if not is_obsolete:
                 # creates term object representing term with id, name, and is_a
-                term_list.append(Term(parse_ID(id), parse_name(name), parse_inheritance(is_a)))
+                term_list.append(Term(parse_ID(id), parse_name(name), is_a_list_formatted))
     
     # returns a list of term objects
     return term_list
