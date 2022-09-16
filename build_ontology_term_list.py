@@ -1,10 +1,12 @@
-# represents a term in ontology file with id, name, and 'is_a' info
+from distutils.command.build import build
+import json
 
+# represents a term in ontology file with id, name, and 'is_a' info
 class Term:
     def __init__(self, id, name, is_a):
         self.id = id
         self.name = name
-        self.parent = is_a
+        self.parents = is_a
 
 def parse_ID(id_text):
     return id_text[4:]
@@ -73,6 +75,12 @@ def build_ontology_term_list(file_path):
     # calls function that creates list of term objects from content of tree
     return extract_terms(tree_content, term_index_list)
 
+def obj_dict(obj):
+    return obj.__dict__
 
+def dump_dict_to_json(term_list):
+    with open('term_list.json', 'w') as fp:
+        json.dump(term_list, fp, default=obj_dict)
 
-
+term_list = build_ontology_term_list('MPheno_OBO.ontology.txt')
+dump_dict_to_json(term_list)
