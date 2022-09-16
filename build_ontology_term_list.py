@@ -7,6 +7,7 @@ class Term:
         self.id = id
         self.name = name
         self.parents = is_a
+        self.level = None
 
 def parse_ID(id_text):
     return id_text[4:]
@@ -76,11 +77,13 @@ def build_ontology_term_list(file_path):
     return extract_terms(tree_content, term_index_list)
 
 def obj_dict(obj):
+    '''default function for dumping to json, returns object as dictionary'''
     return obj.__dict__
 
 def dump_dict_to_json(term_list):
+    '''dumps term list to json, with each Term object converted to dictionary by default function'''
     with open('term_list.json', 'w') as fp:
         json.dump(term_list, fp, default=obj_dict)
 
 term_list = build_ontology_term_list('MPheno_OBO.ontology.txt')
-dump_dict_to_json(term_list)
+#dump_dict_to_json(term_list) 
