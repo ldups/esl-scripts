@@ -1,7 +1,7 @@
-from distutils.command.build import build
 from find_level_bottom import find_term_by_id
 from build_ontology_term_list import build_ontology_term_list
 from find_level_bottom import add_level_to_term_list
+from read_MGI_GenePheno import read_MGI_GenePheno
 
 def match_gene_group_bottom(lowest_level, highest_level, term_list, gene_ll_mp_dictionary):
     ''' 
@@ -13,15 +13,17 @@ def match_gene_group_bottom(lowest_level, highest_level, term_list, gene_ll_mp_d
     argument 3: dictionary in form {gene name: [list of lowest level MPs]}
     returns dictionary in form {gene name: [list of nth level MPs]}
     '''
+    print('in highest level function')
+    print('number of genes: ' + str(len(gene_ll_mp_dictionary)) + '\n')
     gene_n_level_dictionary = {}
     for gene in gene_ll_mp_dictionary:
+        print('new gene: ' + gene + '\n')
         matching_group_list = []
         ll_mps = gene_ll_mp_dictionary[gene]
         for ll_mp in ll_mps:
-            ll_mp_term = find_term_by_id(term_list, ll_mp)
-            level = ll_mp_term.id
-            """ while level < n:
-                parent_ids = ll_mp_term.parents """
+            matching_group_list.extend(find_n_levels(lowest_level, highest_level, term_list, ll_mp))
+        gene_n_level_dictionary[gene] = matching_group_list
+    return gene_n_level_dictionary
 
 
 
@@ -44,5 +46,7 @@ def find_n_levels(lowest_level, highest_level, term_list, term_id):
 
 term_list = build_ontology_term_list('MPheno_OBO.ontology.txt')
 term_list = add_level_to_term_list(term_list)
-print(find_n_levels(3, 2, term_list, 'MP:0020364')) 
+gene_ll_mp_dictionary = read_MGI_GenePheno('MGI_GenePheno.rpt.txt', 'MGI_phenotype_ontology_data.txt')
+print(match_gene_group_bottom(4, 3, term_list, gene_ll_mp_dictionary))
+#print(find_n_levels(3, 2, term_list, 'MP:0020364')) 
  
