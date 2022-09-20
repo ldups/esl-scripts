@@ -1,5 +1,4 @@
 import re
-import time
 from match_gene_groups_top_level import match_gene_groups_top_level
 
 ontology_file_name = 'MPheno_OBO.ontology.txt'
@@ -90,7 +89,7 @@ def read_gene_data_file(gene_data_file_name):
     group_key_file.close()
     final_path_file.close() """
 
-def create_path_file(all_paths_file_name, gene_mp_dictionary, term_list, min_gene_num, output_file_base_name):
+def create_path_file(all_paths_file_name, gene_mp_dictionary, term_list, min_gene_num, max_gene_num, output_file_base_name):
     '''writes two files: 
     1) overlapping path file to be used as ESL input
     2) key file with list of MP categories included in path file and details
@@ -118,7 +117,9 @@ def create_path_file(all_paths_file_name, gene_mp_dictionary, term_list, min_gen
         if gene_name in gene_mp_dictionary:
             groups = gene_mp_dictionary[gene_name]
             for group in groups:
-                group_dictionary[group].append(path_dictionary[gene_name])
+                path = path_dictionary[gene_name]
+                if path not in group_dictionary[group]:
+                    group_dictionary[group].append(path)
 
     print('writing to file')
     group_key_file.write('Id\tName\tNumber of paths\n')
@@ -127,7 +128,7 @@ def create_path_file(all_paths_file_name, gene_mp_dictionary, term_list, min_gen
         id = group
         name = term.name
         num_paths = len(group_dictionary[group])
-        if num_paths >= min_gene_num:
+        if num_paths >= min_gene_num and num_paths <= max_gene_num:
             group_key_file.write(id + '\t' + name + '\t' + str(num_paths) + '\n')
 
             for path in group_dictionary[group]:
