@@ -23,11 +23,13 @@ def read_MGI_GenePheno(geno_pheno_name, pheno_ont_name):
     mgi_name_dictionary = {}
     # skips header line
     next(pheno_ont_file)
+    # creates dictionary in form {mgi: gene name}
     for line in pheno_ont_file:
         gene_name = line.split('\t')[0]
         mgi = line.split('\t')[3]
         mgi_name_dictionary[mgi] = gene_name
 
+    # creates dictionary in form {gene name: [lowest level mps]}
     gene_mp_dictionary = {}
     for mgi in mgi_mp_dictionary:
         if mgi in mgi_name_dictionary:
@@ -42,7 +44,3 @@ def read_MGI_GenePheno(geno_pheno_name, pheno_ont_name):
 
     return gene_mp_dictionary
 
-
-
-
-#dictionary = read_MGI_GenePheno('MGI_GenePheno.rpt.txt', 'MGI_phenotype_ontology_data.txt')

@@ -1,7 +1,6 @@
 from find_level_bottom import find_term_by_id
 
-
-def match_gene_group_bottom(lowest_level, highest_level, term_list, gene_ll_mp_dictionary):
+def match_gene_group_bottom(lowest_level, highest_level, term_list, gene_ll_mp_dictionary): 
     ''' 
     creates dictionary relating gene name and nth level mammalian phenotype IDs that gene belongs to
     argument 1: integer representing lowest level (starting from top) desired (inclusive)
@@ -41,8 +40,5 @@ def find_n_levels(lowest_level, highest_level, term_list, term_id):
                         matching_groups.append(term)
     return matching_groups
 
-
-
-#print(match_gene_group_bottom(4, 3, term_list, gene_ll_mp_dictionary))
 
  

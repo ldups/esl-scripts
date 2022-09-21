@@ -1,8 +1,6 @@
-from distutils.command.build import build
-import json
 
-# represents a term in ontology file with id, name, and 'is_a' info
 class Term:
+    '''represents a term in the ontology file with id, name, parents, and level in tree'''
     def __init__(self, id, name, is_a):
         self.id = id
         self.name = name
@@ -19,6 +17,11 @@ def parse_inheritance(is_a_text):
     return is_a_text[6:16]
 
 def extract_terms(tree_content, term_index_list):
+    '''
+    argument 1: list of lines in term file
+    argument 2: list of indeces representing line numbers that contain "[Term] in term file (represents index of start of each term)
+    returns a list of Term objects populated with id, name, and parents for each
+    '''
     term_list = []
     for i in range(len(term_index_list)):
         term_index = term_index_list[i]
@@ -56,7 +59,9 @@ def extract_terms(tree_content, term_index_list):
     return term_list
 
 def build_ontology_term_list(file_path):
-    '''parses ontology file and converts terms in file into list of Term objects'''
+    '''parses ontology file and converts terms in file into list of Term objects
+    argument 1: file path to OBO file containing terms'''
+
     # reads tree file and splits lines into a list
     tree_file = open(file_path, 'r')
     tree_content = tree_file.read().splitlines()
@@ -75,15 +80,3 @@ def build_ontology_term_list(file_path):
 
     # calls function that creates list of term objects from content of tree
     return extract_terms(tree_content, term_index_list)
-
-def obj_dict(obj):
-    '''default function for dumping to json, returns object as dictionary'''
-    return obj.__dict__
-
-def dump_dict_to_json(term_list):
-    '''dumps term list to json, with each Term object converted to dictionary by default function'''
-    with open('term_list.json', 'w') as fp:
-        json.dump(term_list, fp, default=obj_dict)
-
-term_list = build_ontology_term_list('MPheno_OBO.ontology.txt')
-#dump_dict_to_json(term_list) 

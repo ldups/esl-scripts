@@ -1,6 +1,4 @@
 
-from build_ontology_term_list import build_ontology_term_list
-
 def find_term_by_id(term_list, id):
     ''' finds a Term object in a list of terms by id'''
     for term in term_list:
@@ -18,9 +16,9 @@ def find_term_by_parent(term_list, parent_id):
     
 
 def find_group_level(group, term_list):
-    ''' finds group level of Term object in list of terms
-        top level = is_a 'MP0000001'
-        second level = any group under top level
+    ''' finds group level of Term object in list of terms recursively
+        top level (1) = is_a 'MP0000001'
+        second level (2) = any group under top level
     '''
     parent_object = group
 
@@ -35,6 +33,7 @@ def find_group_level(group, term_list):
     return find_group_level(parent_object, term_list) + 1 
 
 def add_level_to_term_list(term_list):
+    ''' calls find_group_level for each term in list and adds level as property of Term object'''
     for term in term_list:
         level = find_group_level(term, term_list)
         term.level = level
@@ -47,5 +46,4 @@ def find_term_by_level(term_list, level):
             matching_groups.append(term)
     return matching_groups
 
-term_list = build_ontology_term_list('MPheno_OBO.ontology.txt')
 

@@ -10,8 +10,11 @@ print('starting main')
 term_list = build_ontology_term_list('MPheno_OBO.ontology.txt')
 print('term list created')
 term_list = add_level_to_term_list(term_list)
-print('levels added')
+print('levels added to term list')
 gene_ll_mp_dictionary = read_MGI_GenePheno('MGI_GenePheno.rpt.txt', 'MGI_phenotype_ontology_data.txt')
 print('gene_ll_mp_dict created')
 gene_mp_dictionary = match_gene_group_bottom(1000, 4, term_list, gene_ll_mp_dictionary)
-create_path_file('all_orthomam_alignment_paths.txt', gene_mp_dictionary, term_list, 5, 300, 'level_4_down_correct')
+create_path_file('all_orthomam_alignment_paths.txt', gene_mp_dictionary, term_list, 5, 300, 'level_4_down_correct') 
+
+
+
