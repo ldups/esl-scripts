@@ -1,4 +1,3 @@
-from distutils.command.build import build
 import matplotlib.pyplot as plt
 import numpy as np
 import networkx as nx
