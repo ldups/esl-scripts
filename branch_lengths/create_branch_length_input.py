@@ -1,13 +1,14 @@
-def create_branch_length_input(rate_file_path, output_file_base_name, positive_char, negative_char):
+def create_branch_length_input(rate_file_path, output_file_base_name, positive_char, negative_char, threshold):
     '''function creates an input file for ESL with branch length data coded as a fasta file
     argument 1: path for file containing rates or rate shifts between species
     argument 2: base name for fasta output file
     argument 3: character to be used as code for greater rate shift
     argument 4: character to be used as code for lower rate shift
+    argument 5: threshold percentage difference to assign one rate a positive character
     outputs fasta file with sequence for each species containing only positive and negative characters'''
     
     rate_file_path = 'branch_lengths\echo_molec_rates.txt'
-    output_file_base_name = 'output_branch_lenghts'
+    #output_file_base_name = 'output_branch_lenghts'
     output_file_path = 'branch_lengths\\' + output_file_base_name + '.fasta'
     positive_char = 'A'
     negative_char = 'T'
@@ -37,11 +38,14 @@ def create_branch_length_input(rate_file_path, output_file_base_name, positive_c
                 species2_symbol_list = []
                 output_file.write('>' + species1_name + '\n')
                 for i in range(0, len(species1_rates)):
-                    if species1_rates[i] > species2_rates[i]:
+                    if float(species1_rates[i]) - float(species2_rates[i]) > threshold:
                         output_file.write(positive_char)
                         species2_symbol_list.append(negative_char)
+                    elif float(species2_rates[i]) - float(species1_rates[i]) > threshold:
+                        output_file.write(negative_char)
+                        species2_symbol_list.append(positive_char)
                     else:
-                        output_file.write(positive_char)
+                        output_file.write(negative_char)
                         species2_symbol_list.append(negative_char)
                 output_file.write('\n')
                 output_file.write('>' + species2_name + '\n')
@@ -53,3 +57,4 @@ def create_branch_length_input(rate_file_path, output_file_base_name, positive_c
     rate_file.close()
     output_file.close()
 
+create_branch_length_input('branch_lengths/echo_molec_rates.txt', 'echo_threshold44', 'A', 'T', 4.4)
