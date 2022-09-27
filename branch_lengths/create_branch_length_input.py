@@ -6,12 +6,9 @@ def create_branch_length_input(rate_file_path, output_file_base_name, positive_c
     argument 4: character to be used as code for lower rate shift
     argument 5: threshold percentage difference to assign one rate a positive character
     outputs fasta file with sequence for each species containing only positive and negative characters'''
-    
-    rate_file_path = 'branch_lengths\echo_molec_rates.txt'
-    #output_file_base_name = 'output_branch_lenghts'
+
     output_file_path = 'branch_lengths\\' + output_file_base_name + '.fasta'
-    positive_char = 'A'
-    negative_char = 'T'
+    threshold
 
     rate_file = open(rate_file_path, 'r')
     output_file = open(output_file_path, 'w')
@@ -38,10 +35,10 @@ def create_branch_length_input(rate_file_path, output_file_base_name, positive_c
                 species2_symbol_list = []
                 output_file.write('>' + species1_name + '\n')
                 for i in range(0, len(species1_rates)):
-                    if float(species1_rates[i]) - float(species2_rates[i]) > threshold:
+                    if float(species1_rates[i]) / float(species2_rates[i]) - 1 > threshold:
                         output_file.write(positive_char)
                         species2_symbol_list.append(negative_char)
-                    elif float(species2_rates[i]) - float(species1_rates[i]) > threshold:
+                    elif float(species2_rates[i]) / float(species1_rates[i]) - 1 > threshold:
                         output_file.write(negative_char)
                         species2_symbol_list.append(positive_char)
                     else:
@@ -53,8 +50,8 @@ def create_branch_length_input(rate_file_path, output_file_base_name, positive_c
                     output_file.write(symbol)
                 output_file.write('\n')
             
-    print('Output fasta file written successfully.')
+    print('Output fasta file written successfully.\nFasta file path: ', output_file_path)
     rate_file.close()
     output_file.close()
 
-create_branch_length_input('branch_lengths/echo_molec_rates.txt', 'echo_threshold44', 'A', 'T', 4.4)
+create_branch_length_input('branch_lengths/echo_molec_rates.txt', 'echo_thresholddiv2', 'A', 'T', 2)
