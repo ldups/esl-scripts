@@ -82,6 +82,7 @@ def create_branch_length_input_ol(rate_file_path, output_file_base_name, positiv
                 if not line: 
                     at_end = True
                     break
+
                 species1 = line
                 species2 = rate_file.readline().strip()
                 species1_name = species1.split('\t')[0]
@@ -94,29 +95,39 @@ def create_branch_length_input_ol(rate_file_path, output_file_base_name, positiv
                     output_path = output_file_base_name + gene_name + '.fasta'
                     
                     # won't work if file already exists and has stuff in it -> add error
+                    need_new_line = False
                     output_file_object = Path(output_path)
                     if not output_file_object.is_file():
                         all_path_file.write(output_path)
                         if not i == len(species1_rates) - 1:
                             all_path_file.write('\n')
+                    else:
+                        need_new_line = True
+
                     output_file = open(output_path, 'a')
-                    
+            
                     print('Writing to: '+ output_path)
+
+                    if need_new_line:
+                        output_file.write('\n')
 
                     output_file.write('>' + species1_name + '\n')
 
                     if float(species1_rates[i]) / float(species2_rates[i]) - 1 > threshold:
                         output_file.write(positive_char + '\n')
                         output_file.write('>' + species2_name + '\n')
-                        output_file.write(negative_char + '\n')
+                        output_file.write(negative_char)
+
                     elif float(species2_rates[i]) / float(species1_rates[i]) - 1 > threshold:
                         output_file.write(negative_char + '\n')
                         output_file.write('>' + species2_name + '\n')
-                        output_file.write(positive_char + '\n')
+                        output_file.write(positive_char)
+
                     else:
                         output_file.write(negative_char + '\n')
                         output_file.write('>' + species2_name + '\n')
-                        output_file.write(negative_char + '\n')
+                        output_file.write(negative_char)
+
                     output_file.close()
                 
 
