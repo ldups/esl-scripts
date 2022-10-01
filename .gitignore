@@ -131,3 +131,4 @@ dmypy.json
 # input and output files
 *.txt
 *.fasta
+*.fas
