@@ -61,6 +61,8 @@ def create_path_file(all_paths_file_name, gene_mp_dictionary, term_list, min_gen
     print('writing to file')
 
     group_key_file.write('Id\tName\tNumber of paths\n')
+    num_groups_written = 0
+    num_groups_in_dict = len(group_dictionary)
     for group in group_dictionary:
         term = find_term_by_id(group, term_list)
         id = group
@@ -74,7 +76,9 @@ def create_path_file(all_paths_file_name, gene_mp_dictionary, term_list, min_gen
                     final_path_file.write(path + ',')
                 else:
                     final_path_file.write(path)
-            final_path_file.write('\n')
+            if num_groups_written < num_groups_in_dict - 1:
+                final_path_file.write('\n')
+        num_groups_written += 1
 
     group_key_file.close()
     final_path_file.close()
@@ -95,6 +99,5 @@ def read_gene_data_file_top_level(gene_data_file_name):
         gene_dictionary[gene_symbol] = phenotype_id_list
 
     return gene_dictionary    
-    
 
 
